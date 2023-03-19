@@ -159,7 +159,7 @@ namespace TicTacToeApi.Controllers
                 return new JsonResult(Ok(_context.Boards.Find(game.BoardId)).Value);
             }  
             else
-                return new JsonResult(BadRequest("Move must be in interval 1-9 and Cell must be free!"), BadRequest("Its another"));
+                return new JsonResult(BadRequest("Move must be in interval 1-9 and Cell must be free!"));
         }
     }
 }
