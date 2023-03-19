@@ -104,6 +104,16 @@ namespace TicTacToeApi.Models
             }
         }
 
+        public bool CheckFreeCells()
+        {
+            if (Cell_1 != null && Cell_2 != null && Cell_3 != null &&
+                Cell_4 != null && Cell_5 != null && Cell_6 != null &&
+                Cell_7 != null && Cell_8 != null && Cell_9 != null)
+                return false;
+            else
+                return true;
+        }
+
     }
 }
 

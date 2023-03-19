@@ -124,6 +124,8 @@ namespace TicTacToeApi.Controllers
 
                 if (_context.Players.Find(game.Player2Id).IsWin)
                     return new JsonResult(Ok(game.Player2Id));
+
+                return new JsonResult(Ok("Drow!"));
             }
             return new JsonResult(BadRequest("Game dosen't end"));
         }
@@ -140,7 +142,7 @@ namespace TicTacToeApi.Controllers
                 return new JsonResult(BadRequest("Player dosen't exist"));
 
             if (game.IsEnd)
-                return new JsonResult(BadRequest("Game ends, check winner!"));
+                return new JsonResult(BadRequest("Game end, check status!"));
 
             if (_context.Boards.Find(game.BoardId).FillCell(cellToMove, _context.Players.Find(plyerId).PlayerChar))
             {
@@ -155,7 +157,15 @@ namespace TicTacToeApi.Controllers
                     if (_context.Players.Find(game.Player2Id).CheckWin(_context.Boards.Find(game.BoardId)))
                         game.IsEnd = true;
                 }
+
                 _context.SaveChanges();
+
+                if (!_context.Boards.Find(game.BoardId).CheckFreeCells())
+                {
+                    game.IsEnd = true;
+                    _context.SaveChanges();
+                    return new JsonResult(BadRequest("Game end, check status!"));
+                }
                 return new JsonResult(Ok(_context.Boards.Find(game.BoardId)).Value);
             }  
             else
