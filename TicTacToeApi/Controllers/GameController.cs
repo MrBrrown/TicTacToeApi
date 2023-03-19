@@ -171,6 +171,23 @@ namespace TicTacToeApi.Controllers
             else
                 return new JsonResult(BadRequest("Move must be in interval 1-9 and Cell must be free!"));
         }
+
+        [HttpDelete ("Delete Game")]
+        public JsonResult DeleteGame(int gameId)
+        {
+            var game = _context.Games.Find(gameId);
+            if (game == null)
+                return new JsonResult(BadRequest("Game dosen't exist"));
+
+            _context.Players.Remove(_context.Players.Find(game.Player1Id));
+            _context.Players.Remove(_context.Players.Find(game.Player2Id));
+            _context.Boards.Remove(_context.Boards.Find(game.BoardId));
+            _context.Games.Remove(game);
+
+            _context.SaveChanges();
+
+            return new JsonResult(Ok("Game removed"));
+        }
     }
 }
 
